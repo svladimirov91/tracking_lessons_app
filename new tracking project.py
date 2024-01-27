@@ -4,32 +4,30 @@ from tkinter import messagebox
 from random import randrange
 
 root = Tk()
-root.geometry('600x542+550+100')
+root.geometry('1000x415+300+100')
 root.title('Отчёты об уроках')
 
-radio_frame = LabelFrame(root, text="Выберите имя ученика и оставьте ваш отчёт об уроке.",
-                         padx=20, pady=20)
+radio_frame = LabelFrame(
+    root, text="Выберите имя ученика и оставьте ваш отчёт об уроке.", padx=20, pady=20)
 radio_frame.pack()
 
-option_label = Label(radio_frame, text="Ученик: ", pady=15, underline=0)
+option_label = Label(radio_frame, text="Ученик: ", pady=15, underline=0, width=15)
 option_label.grid(row=0, column=0)
 
-students = [("Boris", "Boris"),
-            ("Elizabeth", "Elizabeth"),
-            ("Каспаров Арнольд", "Каспаров Арнольд"),
-            ("Арсений Кащенко", "Арсений Кащенко"),
-            ("Никита Лысенко", "Никита Лысенко"),
-            ("Дмитрий", "Дмитрий"),
-            ("Ксения", "Ксения"),
-            ("Илья", "Илья"),
-            ("Сабина", "Сабина")
+students = ["Boris",
+            "Elizabeth",
+            "Каспаров Арнольд",
+            "Арсений Кащенко",
+            "Никита Лысенко",
+            "Дмитрий",
+            "Ксения",
+            "Илья",
+            "Сабина"
             ]
-student = StringVar()
-student.set("Boris")
-
-for text, option in students:
-    radiobutton = Radiobutton(radio_frame, text=text, variable=student, value=option)
-    radiobutton.grid(column=1, sticky="w")
+choice = StringVar()
+choice.set(students[0])
+drop = OptionMenu(radio_frame, choice, *students)
+drop.grid(row=0, column=1)
 
 comment_frame = Frame(root)
 comment_frame.pack(pady=10)
@@ -41,11 +39,13 @@ entry = Entry(comment_frame, width=40, borderwidth=3)
 entry.grid(row=0, column=1, sticky="w")
 
 exclamation_var = IntVar()
-exclamation_checkbox = Checkbutton(comment_frame, text=" ❗  Пометить как важную информацию", variable=exclamation_var)
+exclamation_checkbox = Checkbutton(
+    comment_frame, text=" ❗  Пометить как важную информацию", variable=exclamation_var)
 exclamation_checkbox.grid(row=2, sticky="w", pady=10)
 
 heart_var = IntVar()
-heart_checkbox = Checkbutton(comment_frame, text=' ❤️  "Как здорово, что мне за это платят деньги"', variable=heart_var)
+heart_checkbox = Checkbutton(
+    comment_frame, text=' ❤️  "Как здорово, что мне за это платят деньги"', variable=heart_var)
 heart_checkbox.grid(row=3, sticky="w", pady=2)
 
 today = datetime.now()
@@ -79,7 +79,7 @@ def heart():
 
 
 def same_date():
-    with open(f"{student.get()}", "r") as the_file:
+    with open(f"{choice.get()}", "r") as the_file:
         lines = [line.strip() for line in the_file.readlines() if line != "\n"]
     global d, m, y
     if f"{d}.{m}.{y}" in lines:
@@ -98,7 +98,7 @@ def more_feedback_yesno():
 
 
 def input_click():
-    with open(f"{student.get()}", "a", encoding='utf-8') as the_file:
+    with open(f"{choice.get()}", "a", encoding='utf-8') as the_file:
         global d, m, y
         comment = heart() + exclamation() + entry.get()
         if comment.strip():
