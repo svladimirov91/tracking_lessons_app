@@ -126,7 +126,6 @@ def add_to_students_list(student_name, snd_window, snd_button, end_button):
     snd_button["state"] = "disabled"
     snd_button["text"] = "Готово!"
     end_button["state"] = "normal"
-    # snd_window.destroy()
 
 
 def add_student():
@@ -140,7 +139,7 @@ def add_student():
 
     add_entry = Entry(adding_frame)
     add_entry.pack(side="right", padx=30, pady=20)
-    end_button = Button(add_window, text="Завершить", state="disabled")
+    end_button = Button(add_window, text="Завершить", state="disabled", command=add_window.destroy)
     end_button.place(x=320, y=135)
 
     add_button = Button(
