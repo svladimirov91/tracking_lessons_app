@@ -120,25 +120,32 @@ def exit_yesno():
         pass
 
 
-def add_to_students_list(student_name, snd_window):
+def add_to_students_list(student_name, snd_window, snd_button, end_button):
     with open("students list.txt", "a", encoding="utf-8") as file:
         file.write(", " + student_name)
-    snd_window.destroy()
+    snd_button["state"] = "disabled"
+    snd_button["text"] = "Готово!"
+    end_button["state"] = "normal"
+    # snd_window.destroy()
 
 
 def add_student():
     add_window = Toplevel()
     add_window.attributes("-topmost", True)
     add_window.title("Добавить ученика")
-    add_window.geometry("350x150+670+330")
+    add_window.geometry("490x190+670+330")
 
-    adding_frame = LabelFrame(add_window, text="Имя нового ученика:")
-    adding_frame.pack(expand=1)
+    adding_frame = LabelFrame(add_window, text="Имя нового ученика:", padx=30, pady=10)
+    adding_frame.pack()
 
     add_entry = Entry(adding_frame)
-    add_entry.pack(side="right")
+    add_entry.pack(side="right", padx=30, pady=20)
+    end_button = Button(add_window, text="Завершить", state="disabled")
+    end_button.place(x=320, y=135)
+
     add_button = Button(
-        adding_frame, text="Добавить", command=lambda: add_to_students_list(add_entry.get(), add_window))
+        adding_frame, text="Добавить",
+        command=lambda: add_to_students_list(add_entry.get(), add_window, add_button, end_button))
     add_button.pack(side="right")
 
 
