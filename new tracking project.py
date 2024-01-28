@@ -4,7 +4,7 @@ from tkinter import messagebox
 from random import randrange
 
 root = Tk()
-root.geometry('1000x415+300+100')
+root.geometry('900x415+335+170')
 root.title('Отчёты об уроках')
 
 radio_frame = LabelFrame(
@@ -29,24 +29,24 @@ choice.set(students[0])
 drop = OptionMenu(radio_frame, choice, *students)
 drop.grid(row=0, column=1)
 
-comment_frame = Frame(root)
-comment_frame.pack(pady=10)
+COMMENT_FRAME = Frame(root)
+COMMENT_FRAME.pack(pady=10)
 
-entry_label = Label(comment_frame, text="Комментарий по уроку: ", pady=20, underline=0)
+entry_label = Label(COMMENT_FRAME, text="Комментарий по уроку: ", pady=20, underline=0)
 entry_label.grid(row=0, column=0)
 
-entry = Entry(comment_frame, width=40, borderwidth=3)
+entry = Entry(COMMENT_FRAME, width=40, borderwidth=3)
 entry.grid(row=0, column=1, sticky="w")
 
 exclamation_var = IntVar()
 exclamation_checkbox = Checkbutton(
-    comment_frame, text=" ❗  Пометить как важную информацию", variable=exclamation_var)
-exclamation_checkbox.grid(row=2, sticky="w", pady=10)
+    COMMENT_FRAME, text=" ❗  Пометить как важную информацию", variable=exclamation_var)
+exclamation_checkbox.grid(row=2, sticky="w", pady=10, columnspan=2)
 
 heart_var = IntVar()
 heart_checkbox = Checkbutton(
-    comment_frame, text=' ❤️  "Как здорово, что мне за это платят деньги"', variable=heart_var)
-heart_checkbox.grid(row=3, sticky="w", pady=2)
+    COMMENT_FRAME, text=' ❤️  "Как здорово, что мне за это платят деньги"', variable=heart_var)
+heart_checkbox.grid(row=3, sticky="w", pady=2, columnspan=2)
 
 today = datetime.now()
 d, m, y = today.day, today.month, today.year
