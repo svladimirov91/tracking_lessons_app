@@ -4,15 +4,12 @@ from tkinter import messagebox
 from random import randrange
 
 root = Tk()
-root.geometry('900x415+335+170')
+root.geometry('750x415+450+215')
 root.title('Отчёты об уроках')
 
-radio_frame = LabelFrame(
-    root, text="Выберите имя ученика и оставьте ваш отчёт об уроке.", padx=20, pady=20)
-radio_frame.pack()
-
-option_label = Label(radio_frame, text="Ученик: ", pady=15, underline=0, width=15)
-option_label.grid(row=0, column=0)
+OPTION_FRAME = LabelFrame(
+    root, text="Выберите имя ученика и оставьте ваш отчёт об уроке", padx=20, pady=20)
+OPTION_FRAME.pack()
 
 students = ["Boris",
             "Elizabeth",
@@ -26,8 +23,11 @@ students = ["Boris",
             ]
 choice = StringVar()
 choice.set(students[0])
-drop = OptionMenu(radio_frame, choice, *students)
-drop.grid(row=0, column=1)
+drop_menu = OptionMenu(OPTION_FRAME, choice, *students)
+drop_menu.pack(side="right", expand=1, fill="x")
+
+option_label = Label(OPTION_FRAME, text="Ученик: ", pady=15, underline=0, width=15)
+option_label.pack(side="right")
 
 COMMENT_FRAME = Frame(root)
 COMMENT_FRAME.pack(pady=10)
