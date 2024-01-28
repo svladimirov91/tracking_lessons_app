@@ -8,26 +8,22 @@ root.geometry('750x415+450+215')
 root.title('Отчёты об уроках')
 
 OPTION_FRAME = LabelFrame(
-    root, text="Выберите имя ученика и оставьте ваш отчёт об уроке", padx=20, pady=20)
+    root, text="Выберите имя ученика:", padx=20, pady=20, labelanchor='n')
 OPTION_FRAME.pack()
 
-students = ["Boris",
-            "Elizabeth",
-            "Каспаров Арнольд",
-            "Арсений Кащенко",
-            "Никита Лысенко",
-            "Дмитрий",
-            "Ксения",
-            "Илья",
-            "Сабина"
-            ]
+with open("students list.txt", "r", encoding="utf-8") as file:
+    students = []
+    for string in file.readlines():
+        for el in string.split(","):
+            students.append(el.strip())
+
 choice = StringVar()
 choice.set(students[0])
 drop_menu = OptionMenu(OPTION_FRAME, choice, *students)
 drop_menu.pack(side="right", expand=1, fill="x")
 
 option_label = Label(OPTION_FRAME, text="Ученик: ", pady=15, underline=0, width=15)
-option_label.pack(side="right")
+option_label.pack(side="left")
 
 COMMENT_FRAME = Frame(root)
 COMMENT_FRAME.pack(pady=10)
@@ -48,10 +44,18 @@ heart_checkbox = Checkbutton(
     COMMENT_FRAME, text=' ❤️  "Как здорово, что мне за это платят деньги"', variable=heart_var)
 heart_checkbox.grid(row=3, sticky="w", pady=2, columnspan=2)
 
-today = datetime.now()
-d, m, y = today.day, today.month, today.year
-if len(str(m)) == 1:
-    m = "0" + str(m)
+
+def exclamation():
+    if exclamation_var.get():
+        return "❗"
+    return ""
+
+
+def heart():
+    if heart_var.get():
+        return "❤️"
+    return ""
+
 
 with open("quotes.txt", "r", encoding='utf-8') as quotes:
     quotes_without_spaces = [quote.strip() for quote in quotes.readlines() if quote != "\n"]
@@ -66,16 +70,10 @@ def exit_quotes():
     messagebox.showinfo("Успешных уроков!", formatted_quotes[random_quote_index])
 
 
-def exclamation():
-    if exclamation_var.get():
-        return "❗"
-    return ""
-
-
-def heart():
-    if heart_var.get():
-        return "❤️"
-    return ""
+today = datetime.now()
+d, m, y = today.day, today.month, today.year
+if len(str(m)) == 1:
+    m = "0" + str(m)
 
 
 def same_date():
@@ -122,13 +120,41 @@ def exit_yesno():
         pass
 
 
+def add_to_students_list(student_name, snd_window):
+    with open("students list.txt", "a", encoding="utf-8") as file:
+        file.write(", " + student_name)
+    snd_window.destroy()
+
+
+def add_student():
+    add_window = Toplevel()
+    add_window.attributes("-topmost", True)
+    add_window.title("Добавить ученика")
+    add_window.geometry("350x150+670+330")
+
+    adding_frame = LabelFrame(add_window, text="Имя нового ученика:")
+    adding_frame.pack(expand=1)
+
+    add_entry = Entry(adding_frame)
+    add_entry.pack(side="right")
+    add_button = Button(
+        adding_frame, text="Добавить", command=lambda: add_to_students_list(add_entry.get(), add_window))
+    add_button.pack(side="right")
+
+
 button_frame = Frame(root)
 button_frame.pack()
 
-input_button = Button(button_frame, text="Отправить", command=input_click, padx=12, pady=4)
-input_button.grid(row=0, column=0, padx=20, pady=20)
+new_student_button = Button(
+    button_frame, text="Новый ученик", command=add_student, padx=1, pady=4)
+new_student_button.grid(row=0, column=0, padx=15, pady=20)
 
-exit_button = Button(button_frame, text="Выход", command=exit_yesno, padx=20, pady=4)
-exit_button.grid(row=0, column=1, padx=20, pady=20)
+input_button = Button(
+    button_frame, text="Отправить", command=input_click, padx=12, pady=4)
+input_button.grid(row=0, column=1, padx=20, pady=20)
+
+exit_button = Button(
+    button_frame, text="Выход", command=exit_yesno, padx=20, pady=4)
+exit_button.grid(row=0, column=2, padx=20, pady=20)
 
 root.mainloop()
