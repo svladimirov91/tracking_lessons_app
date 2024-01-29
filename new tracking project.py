@@ -4,45 +4,13 @@ from tkinter import messagebox
 from random import randrange
 
 root = Tk()
-root.geometry('920x435+450+215')
+root.geometry('872x435+450+215')
 root.title('Отчёты об уроках')
+root.resizable(False, False)
 
 OPTION_FRAME = LabelFrame(
-    root, text="Выберите имя ученика:", padx=1, pady=20, labelanchor='n')
-OPTION_FRAME.pack()
-
-
-def add_to_students_list(student_name, snd_window, snd_button, end_button):
-    with open("students list.txt", "a", encoding="utf-8") as file:
-        file.write(", " + student_name)
-    snd_button["state"] = "disabled"
-    snd_button["text"] = "Готово!"
-    end_button["state"] = "normal"
-
-
-def add_student():
-    add_window = Toplevel()
-    add_window.attributes("-topmost", True)
-    add_window.title("Добавить ученика")
-    add_window.geometry("490x190+670+330")
-
-    adding_frame = LabelFrame(add_window, text="Имя нового ученика:", padx=30, pady=10)
-    adding_frame.pack()
-
-    add_entry = Entry(adding_frame)
-    add_entry.pack(side="right", padx=30, pady=20)
-    end_button = Button(add_window, text="Завершить", state="disabled", command=add_window.destroy)
-    end_button.place(x=320, y=135)
-
-    add_button = Button(
-        adding_frame, text="Добавить",
-        command=lambda: add_to_students_list(add_entry.get(), add_window, add_button, end_button))
-    add_button.pack(side="right")
-
-
-new_student_button = Button(
-    OPTION_FRAME, text="Настройки списка", command=add_student, padx=1, pady=4, width=15)
-new_student_button.pack(side="right", padx=40, fill="x")
+    root, text="Выберите имя ученика:", padx=140, pady=20, labelanchor='n')
+OPTION_FRAME.pack(fill="x")
 
 with open("students list.txt", "r", encoding="utf-8") as file:
     students = []
@@ -153,13 +121,45 @@ def exit_yesno():
         pass
 
 
+def add_to_students_list(student_name, snd_window, snd_button, end_button):
+    with open("students list.txt", "a", encoding="utf-8") as file:
+        file.write(", " + student_name)
+    snd_button["state"] = "disabled"
+    snd_button["text"] = "Готово!"
+    end_button["state"] = "normal"
+
+
+def add_student():
+    add_window = Toplevel()
+    add_window.attributes("-topmost", True)
+    add_window.title("Добавить ученика")
+    add_window.geometry("490x190+670+330")
+
+    adding_frame = LabelFrame(add_window, text="Имя нового ученика:", padx=30, pady=10)
+    adding_frame.pack()
+
+    add_entry = Entry(adding_frame)
+    add_entry.pack(side="right", padx=30, pady=20)
+    end_button = Button(add_window, text="Завершить", state="disabled", command=add_window.destroy)
+    end_button.place(x=320, y=135)
+
+    add_button = Button(
+        adding_frame, text="Добавить",
+        command=lambda: add_to_students_list(add_entry.get(), add_window, add_button, end_button))
+    add_button.pack(side="right")
+
+
 button_frame = Frame(root)
 button_frame.pack(side="right")
 
+new_student_button = Button(
+    button_frame, text="Настройки списка", command=add_student, padx=1, pady=4, width=15)
+new_student_button.grid(row=0, column=0)
+
 input_button = Button(COMMENT_FRAME, text="Отправить", command=input_click, padx=12, pady=4)
-input_button.grid(row=2, column=2, padx=20, pady=20)
+input_button.grid(row=2, column=2, padx=50, pady=20)
 
 exit_button = Button(button_frame, text="Выход", command=exit_yesno, padx=35, pady=4)
-exit_button.grid(row=0, column=0, padx=20, pady=20)
+exit_button.grid(row=0, column=1, padx=20, pady=20)
 
 root.mainloop()
